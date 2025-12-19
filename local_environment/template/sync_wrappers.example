@@ -1,0 +1,44 @@
+# sync_wrappers.bash — Project-specific sync wrappers
+#
+# This file is loaded automatically when this private environment subdirectory is present.
+# Use it for pushSync/pullSync wrappers specific to project servers.
+#
+# The base pushSync/pullSync functions are in the public .bash_functions.
+# These wrappers simply call them with predefined server aliases.
+#
+# Example wrappers (replace with your actual server aliases):
+
+# Example: Production server
+# function pullSyncProd() {
+#     local server_alias="PROD_SERVER"
+#     pullSync "$server_alias" "$@"
+# }
+#
+# function pushSyncProd() {
+#     local server_alias="PROD_SERVER"
+#     pushSync "$server_alias" "$@"
+# }
+
+# Example: Staging server
+# function pullSyncStage() {
+#     local server_alias="STAGE_SERVER"
+#     pullSync "$server_alias" "$@"
+# }
+#
+# function pushSyncStage() {
+#     local server_alias="STAGE_SERVER"
+#     pushSync "$server_alias" "$@"
+# }
+
+# Example: Development server
+# function pullSyncDev() {
+#     local server_alias="DEV_SERVER"
+#     pullSync "$server_alias" "$@"
+# }
+#
+# function pushSyncDev() {
+#     local server_alias="DEV_SERVER"
+#     pushSync "$server_alias" "$@"
+# }
+
+# Placeholder — remove or comment out examples when adding real wrappers

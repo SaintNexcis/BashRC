@@ -1,0 +1,17 @@
+# local_env.bash — Project-specific environment variables
+#
+# This file is loaded automatically when this private environment subdirectory is present.
+# Use it for exports and variables unique to this project/environment.
+#
+# Example exports (replace with your actual ones):
+
+# export DEFAULT_SSH_KEY="$HOME/.ssh/myproject_key.ppk"
+
+# export PROJECT_ROOT="/var/www/myproject"
+
+# export DRUSH_OPTIONS_URI="https://example.com"
+
+# Example: API tokens (use placeholders — never commit real secrets)
+# export API_KEY="your-api-key-placeholder"
+
+# Placeholder — remove or comment out examples when adding real variables

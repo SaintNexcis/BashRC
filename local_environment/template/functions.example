@@ -1,0 +1,34 @@
+# functions.bash — Project-specific functions
+#
+# This file is loaded automatically when this private environment subdirectory is present.
+# Use it for custom functions unique to this project/environment.
+#
+# Example functions (replace with your actual ones):
+
+# Example: Quick Drupal cache clear on a specific site
+# function dcc() {
+#     drush --uri=https://example.com cache:rebuild
+# }
+
+# Example: Deploy script shortcut
+# function deploy() {
+#     echo "Running deployment steps..."
+#     git pull origin main
+#     composer install --no-dev
+#     drush updatedb -y
+#     drush cache:rebuild
+# }
+
+# Example: Backup database
+# function db_backup() {
+#     local timestamp=$(date +%Y%m%d_%H%M%S)
+#     drush sql:dump --result-file="/backups/db_$timestamp.sql.gz" --gzip
+#     echo "Backup saved to /backups/db_$timestamp.sql.gz"
+# }
+
+# Example: Switch to project directory
+# function cdproj() {
+#     cd /var/www/myproject/web || echo "Project directory not found"
+# }
+
+# Placeholder — remove or comment out examples when adding real functions

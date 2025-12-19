@@ -1,0 +1,37 @@
+# To see current shell options settings type: shopt
+#
+# shopt -s option # sets an option
+# shopt -u option # unsets an option
+#
+# List of built-in options here:
+# https://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
+# 
+
+# Settings only supported in Bash 4 and above.
+# Max OS uses version 3 due to licensing issues.
+# Use homebrew to install version 4
+if [ "${BASH_VERSION:0:1}" -ge 4 ]; then
+    # Automatically apply cd when a directory name is entered
+    shopt -s autocd
+fi
+
+# Autocorrects cd misspellings
+shopt -s cdspell
+
+# Save multi-line commands in history as single line
+shopt -s cmdhist
+
+# Included dot files in expansion
+shopt -s dotglob
+
+# Extended pattern matching
+shopt -s extglob
+
+# Append history rather than overwriting it
+shopt -s histappend
+
+# Update windows size on command
+shopt -s checkwinsize
+
+# Epand aliases
+shopt -s expand_aliases

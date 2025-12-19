@@ -1,0 +1,33 @@
+# aliases.bash — Project-specific aliases
+#
+# This file is loaded automatically when this private environment subdirectory is present.
+# Use it for SSH shortcuts, project commands, PHP version switches, or any aliases unique to this environment.
+#
+# Example aliases (replace with your actual ones):
+
+# SSH shortcuts to project servers
+# alias ssh-prod="ssh user@prod.example.com"
+# alias ssh-stage="ssh user@staging.example.com"
+# alias ssh-dev="ssh user@dev.example.com"
+
+# Project-specific commands
+# alias drush-prod="drush --uri=https://prod.example.com"
+# alias composer-prod="composer --working-dir=/var/www/prod"
+
+# PHP version management (if multiple versions on server)
+# alias php74="php74"
+# alias php81="php81"
+
+# Quick navigation
+# alias cdweb="cd /var/www/html/web"
+# alias cdconfig="cd /var/www/html/config/sync"
+
+# Git aliases specific to this project
+# alias gpthis="git push origin $(git rev-parse --abbrev-ref HEAD)"
+
+# Safety aliases
+# alias rm="rm -i"
+# alias cp="cp -i"
+# alias mv="mv -i"
+
+# Placeholder — remove or comment out examples when adding real aliases

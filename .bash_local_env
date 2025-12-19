@@ -1,0 +1,120 @@
+# .bash_localenv - Bash Local Environment Settings
+#
+# This file contains environment-specific settings for the Bash shell. It stores
+# custom configurations and preferences unique to a user's local environment,
+# maintaining separation from standard Bash configurations in the .bashrc file.
+#
+# The file includes the following settings:
+#
+#   1. PATH variable update: Appends $HOME/.local/bin and $HOME/bin to the
+#      $PATH variable, ensuring local binaries and scripts can be executed without
+#      providing their full path.
+#   2. Composer binary path: Updates the $PATH variable to include the path to
+#      Composer's global vendor binaries if composer is installed.
+#   3. Systemd pager settings: A commented-out line for disabling the auto-paging
+#      feature of systemctl is included.
+#   4. Local Bash files location: Sets the $BASEDIR variable to store the location
+#      of local Bash files, which are included later in the file.
+#   5. File inclusions: Sources local Bash files listed in the BASHINCS array if
+#      they exist.
+#   6. Prompt settings: Unsets the color_prompt and force_color_prompt variables
+#      and sets a custom prompt with colors and various information, such as the
+#      current directory, hostname, and git branch.
+#
+# This .bash_localenv file helps to maintain a clear separation between standard
+# Bash configurations and local environment-specific settings, simplifying the
+# management and maintenance of a personalized Bash shell environment.
+
+# Optional universal default — only set if you have a non-sensitive key
+# export DEFAULT_SSH_KEY="$HOME/.ssh/generic.ppk"
+
+# User specific and standard system paths
+# Add user bins and /usr/local/bin (standard for packaged software like php, composer, git, etc.)
+
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]; then
+    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+
+if ! [[ "$PATH" =~ "/usr/local/bin:" ]]; then
+    PATH="/usr/local/bin:$PATH"
+fi
+
+# Optional: /usr/local/sbin for admin tools (common on servers)
+if ! [[ "$PATH" =~ "/usr/local/sbin:" ]]; then
+    PATH="/usr/local/sbin:$PATH"
+fi
+
+composer_home=$(composer config -g home 2>/dev/null)
+if [ -n "$composer_home" ] && ! [[ "$PATH" =~ "$composer_home/vendor/bin:$HOME/.config/composer/vendor/bin:" ]]; then
+    export PATH="$PATH:$(composer config -g home)/vendor/bin:$HOME/.config/composer/vendor/bin"
+fi
+
+# ls color support — export LS_COLORS for GNU ls (Pair.com uses GNU coreutils)
+export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anv=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:'
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# Location of my Bash files
+BASEDIR="${HOME}/BashRC"
+
+# Define file includes
+BASHINCS=(".bash_linux" ".bash_mac" ".bash_aliases" ".bash_functions" ".bash_sync_wrappers" ".bash_exports" ".bash_options" ".bash_env_aliases")
+
+# Load the file includes if they exist
+for file in ${BASHINCS[@]}; do
+	[ -f $BASEDIR/$file ] && source $BASEDIR/$file;
+done
+unset file
+
+# Get instance public ip address
+export INSTANCE_PUBLIC_IP=$(curl -s https://api.ipify.org | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+')
+
+# SET A CUSTOM PROMPT
+#
+#  \t - time
+#  \d - date
+#  \n - newline
+#  \s - Shell name
+#  \W - The current working directory
+#  \w - The full path of the current working directory.
+#  \u - The user name
+#  \h - Hostname
+#  \# - The command number of this command.
+#  \! - The history number of the current command
+#
+# COLORS
+#
+#   \[\e[90m\]      = grey for brackets []
+#   \[\e[01;36m\]   = cyan for \w path and $ prompt
+#   \[\e[0m\]       = reset colors
+#
+
+unset color_prompt force_color_prompt
+
+# Change Prompt
+# ------------------------------------------------------------
+export PS1="________________________________________________________________________________"
+export PS1+="\n| \[\033[34m\]\w\[\033[33m\] @ "
+export PS1+="\e[32m[$(parse_php_version) \h]\[\033[33m\] (\u) "
+export PS1+="\[\033[31m\]\$(parse_git_repo) \$(parse_git_branch) \[\033[00m\] \n| => "
+export PS2="| => "
+
+# ==============================================================================
+# Load private environment overrides from subdirectories only
+# ==============================================================================
+LOCAL_ENV_DIR="$HOME/BashRC/local_environment"
+
+if [[ -d "$LOCAL_ENV_DIR" ]]; then
+    for subdir in "$LOCAL_ENV_DIR"/*/; do
+        if [[ -d "$subdir" ]]; then
+            if ls "$subdir"*.bash >/dev/null 2>&1; then
+                subdir_name=$(basename "$subdir")
+                echo "Loading overrides from $subdir_name..."
+                for file in "$subdir"*.bash; do
+                    [[ -f "$file" && -r "$file" ]] && source "$file" 2>/dev/null
+                done
+            fi
+        fi
+    done
+fi

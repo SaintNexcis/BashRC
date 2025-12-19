@@ -1,0 +1,102 @@
+# If we are not on Mac OS we exit
+[ "$(uname)" != "Darwin" ] && return;
+
+# Set instance name for macOS
+export INSTANCE_NAME=$(scutil --get ComputerName)
+
+# List
+alias ls='ls -alF --color=always'     # Preferred 'ls' implementation
+
+# MySQL
+if ! [[ "$PATH" =~ "/usr/local/mysql/bin:" ]]; then
+    export PATH="/usr/local/mysql/bin:$PATH"
+fi
+
+# Add Homebrew binary path to $PATH
+# This ensures that executables of Homebrew packages are accessible from the terminal
+if ! [[ "$PATH" =~ "/opt/homebrew/bin:" ]]; then
+    export PATH="/opt/homebrew/bin:$PATH"
+fi
+
+#--------------------------------------------------------------------------
+# APPLICATION ALIASES
+#--------------------------------------------------------------------------
+
+alias brave="open -a Brave"
+alias chrome="open -a Chrome"
+alias safari="open -a Safari"
+alias firefox="open -a Firefox"
+alias bbedit="open -a BBEdit"
+alias vsc="open -a Visual\ Studio\ Code"
+
+#--------------------------------------------------------------------------
+# EXPORTS
+#--------------------------------------------------------------------------
+
+export CLICOLOR=1
+export LS_COLORS=GxFxCxDxBxegedabagaced
+
+#--------------------------------------------------------------------------
+# FUNCTIONS
+#--------------------------------------------------------------------------
+
+# Reset the terminal
+function reload(){
+    reset
+    source ${HOME}/.bash_profile
+}
+
+# -----------------------------------------------------------------------------
+
+# Show/hide hidden files
+function togglehidden() {
+    ISHIDDEN=$(defaults read com.apple.finder AppleShowAllFiles)
+    if [ $ISHIDDEN == TRUE ]; then
+        defaults write com.apple.finder AppleShowAllFiles FALSE
+    else
+        defaults write com.apple.finder AppleShowAllFiles TRUE
+    fi
+    killall Finder
+}
+
+# -----------------------------------------------------------------------------
+
+# Creates an invisible doc spacer
+function dockspacer() {
+    defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'; killall Dock
+}
+
+#--------------------------------------------------------------------------
+
+# Change directories and list contents
+function lc() {
+    if ! [[ -z "$1" ]]; then
+        cd $1
+    fi
+    ls -A
+}
+
+#--------------------------------------------------------------------------
+
+# Empty trash
+function emptytrash() {
+    rm -rf ~/.Trash/*
+    echo "Trash has been emptied."
+}
+
+#--------------------------------------------------------------------------
+
+# Create a spacer in the doc
+function mkdockspacer(){
+    defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'
+    killall Dock
+}
+
+#   ---------------------------------------
+#   WEB DEVELOPMENT
+#   ---------------------------------------
+
+function status () { brew services info "$1"; }
+function restart () { brew services restart "$1"; sleep 2; status "$1";}
+function stop () {  brew services stop "$1"; sleep 2; status "$1"; }
+function start () {  brew services start "$1"; sleep 2; status "$1"; }

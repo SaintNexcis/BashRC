@@ -1,0 +1,8 @@
+# Ignore everything in local_environment/ ...
+local_environment/*
+
+# ... except the template folder and placeholder files
+!local_environment/.gitkeep
+!local_environment/README.md
+!local_environment/template/
+!local_environment/template/**

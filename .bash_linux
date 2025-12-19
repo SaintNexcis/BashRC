@@ -1,0 +1,57 @@
+# If we are on Mac OS we exit
+[ "$(uname)" == "Darwin" ] && return;
+
+# Set instance name for Linux
+export INSTANCE_NAME=$(hostname)
+
+# List
+alias ls='ls --time-style="+%b %d %Y %H:%M:%S"'     # Preferred 'ls' implementation
+
+#--------------------------------------------------------------------------
+
+# Launch neofetch
+#neofetch
+
+#--------------------------------------------------------------------------
+
+# Open a file or URL with the system default application.
+# We suppress error messages so the terminal doesn't get polluted.
+alias open="xdg-open >/dev/null 2>&1"
+
+#add new fonts
+alias fcs='sudo fc-cache -fv'
+alias fcl='sudo fc-cache -fv ~/.fonts'
+
+# Colorize
+#alias ls='ls --color=auto'
+alias dir='dir --color=auto'
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+# -----------------------------------------------------------------------------
+
+# Reset the terminal
+function reload(){
+    reset
+    source ${HOME}/.bashrc
+}
+
+#   ---------------------------------------
+#   WEB DEVELOPMENT
+#   ---------------------------------------
+function status () { sudo systemctl status "$1"; }
+function restart () { sudo systemctl restart "$1"; sleep 2; status "$1";}
+function stop () {  sudo systemctl stop "$1"; sleep 2; status "$1"; }
+function start () {  sudo systemctl start "$1"; sleep 2; status "$1"; }
+
+# setup ssh-agent
+#   --------------------------------------------------------
+function start_agent {
+    echo "Initialising new SSH agent..."
+    /usr/bin/ssh-agent | sed 's/^echo/#echo/' > "${SSH_ENV}"
+    echo succeeded
+    chmod 600 "${SSH_ENV}"
+    . "${SSH_ENV}" > /dev/null
+    /usr/bin/ssh-add;
+}
